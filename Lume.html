@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lume — Nutrient Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Geist", system-ui, -apple-system, sans-serif;
+    color: #15151b;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    background:
+      radial-gradient(1200px 800px at 8% -10%,  oklch(0.94 0.045 60 / 1) 0%, transparent 55%),
+      radial-gradient(1100px 900px at 95% 15%,  oklch(0.93 0.06 295 / 1) 0%, transparent 55%),
+      radial-gradient(1300px 900px at 50% 110%, oklch(0.94 0.05 165 / 1) 0%, transparent 55%),
+      #f4f1ec;
+    background-attachment: fixed;
+  }
+  /* App canvas — phone centered on the aurora */
+  .stage {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 40px 20px;
+    box-sizing: border-box;
+  }
+  /* Reusable glass surface tokens (utility classes for direct-edit) */
+  .glass {
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 0.5px solid rgba(255,255,255,0.9);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.9) inset,
+      0 -0.5px 0 rgba(0,0,0,0.03) inset,
+      0 12px 36px -12px rgba(40,30,80,0.16),
+      0 2px 8px -2px rgba(40,30,80,0.06);
+  }
+  .glass-strong {
+    background: rgba(255,255,255,0.78);
+    backdrop-filter: blur(26px) saturate(200%);
+    -webkit-backdrop-filter: blur(26px) saturate(200%);
+    border: 0.5px solid rgba(255,255,255,0.95);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,1) inset,
+      0 14px 40px -16px rgba(40,30,80,0.18);
+  }
+  .glass-tint-sage { background: linear-gradient(160deg, oklch(0.88 0.08 155 / 0.55), oklch(0.94 0.04 155 / 0.5)); }
+  .glass-tint-coral { background: linear-gradient(160deg, oklch(0.88 0.09 30 / 0.55), oklch(0.94 0.05 30 / 0.5)); }
+  .glass-tint-peri { background: linear-gradient(160deg, oklch(0.88 0.08 275 / 0.55), oklch(0.94 0.04 275 / 0.5)); }
+  .glass-tint-gold { background: linear-gradient(160deg, oklch(0.9 0.08 80 / 0.55), oklch(0.95 0.05 80 / 0.5)); }
+  /* numerals */
+  .mono { font-family: "Geist Mono", ui-monospace, monospace; font-feature-settings: "tnum" 1; }
+  .serif { font-family: "Instrument Serif", "Times New Roman", serif; font-style: italic; }
+  /* hide scrollbars inside phone */
+  .phone-scroll::-webkit-scrollbar { display: none; }
+  .phone-scroll { scrollbar-width: none; }
+  /* h-scroll snap */
+  .hsnap { scroll-snap-type: x mandatory; }
+  .hsnap > * { scroll-snap-align: start; }
+  /* shimmery indicator */
+  @keyframes pulse-soft {
+    0%,100% { opacity: 0.7; }
+    50% { opacity: 1; }
+  }
+  .pulse-soft { animation: pulse-soft 2.4s ease-in-out infinite; }
+  @keyframes shine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(200%); }
+  }
+  .shine::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.4) 50%, transparent 70%);
+    animation: shine 4s ease-in-out infinite;
+    pointer-events: none;
+  }
+  button { font-family: inherit; cursor: pointer; }
+  /* No outer chrome — looks like a real phone on the desk */
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="src/icons.jsx"></script>
+<script type="text/babel" src="src/data.jsx"></script>
+<script type="text/babel" src="src/primitives.jsx"></script>
+<script type="text/babel" src="src/screen-home.jsx"></script>
+<script type="text/babel" src="src/screen-log.jsx"></script>
+<script type="text/babel" src="src/screen-nutrients.jsx"></script>
+<script type="text/babel" src="src/screen-insights.jsx"></script>
+<script type="text/babel" src="src/screen-profile.jsx"></script>
+<script type="text/babel" src="src/app.jsx"></script>
+</body>
+</html>
